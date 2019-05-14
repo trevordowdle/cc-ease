@@ -1,18 +1,29 @@
+
 <br />
-<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-  <div class="example-box" *ngFor="let movie of movies" cdkDrag>{{movie}}</div>
+
+
+
+<br />
+<div *ngFor="let key of scoringKeys">
+  {{key}}:<b>{{raceInfo[key].score}}</b>
 </div>
 <br />
-<div cdkDropList (cdkDropListDropped)="drop($event)">
+<br />
+<div cdkDropList (cdkDropListDropped)="drop($event)" class="mat-elevation-z8 container">
   <table>
     <thead>
       <tr>
-        <th>Title</th>
+        <th *ngFor="let key of resultKeys">
+          {{key}}
+        </th>
       </tr>
     </thead>
     <tbody>
-      <tr class="example-box" *ngFor="let movie of movies" cdkDrag><td>{{movie}}</td></tr>
+      <tr *ngFor="let result of results" cdkDrag>
+        <td *ngFor="let key of resultKeys">
+          {{result[key]}}
+        </td>
+      </tr>
     </tbody>
   </table>
-<!--   <div class="example-box" *ngFor="let movie of movies" cdkDrag>{{movie}}</div> -->
 </div>
