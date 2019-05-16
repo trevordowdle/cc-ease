@@ -263,4 +263,30 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     moveItemInArray(this.results, event.previousIndex, event.currentIndex);
   }
 
+  formatTime(time){
+    let hours = time.getHours();
+    let minutes = time.getMinutes();
+    let seconds = time.getSeconds();
+    let milliseconds = parseInt((time.getMilliseconds()/1000).toFixed(0));
+    if(milliseconds > 0){
+      seconds += 1;
+      if(seconds > 59){
+        seconds = '00';
+        minutes += 1;
+        if(minutes > 59){
+          minutes = '00';
+          hours += 1;
+        }
+      }
+    }
+    if(minutes < 10 && !(minutes.length === 2)){
+      minutes = '0'+minutes;
+    }
+    if(seconds < 10 && !(seconds.length === 2)){
+      seconds = '0'+seconds;
+    }
+    return hours+':'+minutes+':'+seconds;
+    return time;
+  }
+
 }

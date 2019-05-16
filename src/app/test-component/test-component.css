@@ -31,6 +31,10 @@ table tbody tr:hover {
   background-color: rgb(238, 238, 238);
 }
 
+table#tblResult tbody tr {
+  cursor:pointer;
+}
+
 .cdk-drag-preview {
   background-color:rgb(238, 238, 238)!important;
   padding: 20px 10px;

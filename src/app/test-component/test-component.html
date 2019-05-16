@@ -23,7 +23,7 @@
         {{key}}
       </td>
       <td>
-        {{raceInfo[key].totalTime}}
+        {{formatTime(raceInfo[key].totalTime)}}
       </td>
       <td></td>
       <td>
@@ -39,7 +39,7 @@
 <br />
 <br />
 <div cdkDropList (cdkDropListDropped)="drop($event)" class="mat-elevation-z8 container">
-  <table>
+  <table id="tblResult">
     <thead>
       <tr>
         <th *ngFor="let key of resultKeys">
