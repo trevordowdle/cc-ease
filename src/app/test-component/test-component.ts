@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
@@ -120,6 +120,9 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
 -	HESLINGTON, Jacob	118	BYU	--	DNF	---
 -	PERRIER, Patrick	277	Stanford	--	DNF	---`;
 
+
+ @Input() title: string;
+
   constructor(){
     console.log(this.raceData);
     let results = this.raceData.split('\n');
@@ -136,53 +139,18 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
       });
       return output;
     },[]);
-    let scoringInfo = 
-    results.reduce((sInfo,result,i)=>{
-      if(!sInfo[result['TEAM']]){
-        sInfo[result['TEAM']] = {
-          count:0,
-          SCORE:0,
-          order:[],
-          totalTime:new Date('1/1/1'),
-          scoringTimes:[]
-        };
-      }
-      let infoRef = sInfo[result['TEAM']];
-      if(infoRef.count < 5){
-        infoRef.count += 1;
-        //infoRef.score += result['PL']; // may not be needed could be processed on the fly
-        infoRef.order.push(result['PL']);
-        this.addTime(result['TIME'],infoRef.totalTime); // may not be needed could be processed on the fly
-        infoRef.scoringTimes.push(result['TIME']);
-      }
-      return sInfo;
-    },{});
-    let scoringFilters = [];
-    Object.keys(scoringInfo).map(team=>{
-      scoringInfo[team].spread = this.getSpread(scoringInfo[team].scoringTimes);
-      scoringInfo[team].average = this.getAverage(scoringInfo[team].scoringTimes);
-      if(scoringInfo[team].count < 5){
-        scoringFilters.push(team);
-      }
-    }); 
-    let teamCount = {};
-    results.filter((result)=>{
-      if(!teamCount[result['TEAM']]){
-        teamCount[result['TEAM']] = 0;
-      }
-      teamCount[result['TEAM']] += 1;
-      return scoringFilters.indexOf(result['TEAM']) === -1 && teamCount[result['TEAM']] <= 7 /*&& (result['TEAM'] === 'BYU' ||result['TEAM'] === "Oregon")*/; //duel meet calculations
-    })
-    .reduce((teamObj,result,i)=>{
-      if(!teamObj[result['TEAM']]){
-        teamObj[result['TEAM']] = 0;
-      }
-      teamObj[result['TEAM']] += 1;
-      if(teamObj[result['TEAM']] <= 5){
-        result['SCORE'] = i+1;
-      }
-      return teamObj;
-    },{});
+
+    let temp;
+
+    //get Scoring info
+    let scoringInfo = this.buildScoringInfo(results);
+    //get Scoring filters, populate avg, spread
+    temp = this.populateScoringInfoAndBuildScoringFilters(scoringInfo);
+    let scoringFilters = temp.scoringFilters;
+    scoringInfo = temp.scoringInfo;
+    //TODO - peur fnc
+    //calculate runners scores
+    this.calculateScores(results,scoringFilters);
 
     let scoreTotals = results.reduce((scoreObj,result)=>{
       if(!scoreObj[result['TEAM']]){
@@ -218,6 +186,65 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     //console.log(BillDellinger);
     console.log('k');
   };
+
+
+  //Determine runners scores
+  calculateScores(results,scoringFilters){
+    let teamCount = {};
+    results.filter((result)=>{
+      if(!teamCount[result['TEAM']]){
+        teamCount[result['TEAM']] = 0;
+      }
+      teamCount[result['TEAM']] += 1;
+      return scoringFilters.indexOf(result['TEAM']) === -1 && teamCount[result['TEAM']] <= 7 /*&& (result['TEAM'] === 'BYU' ||result['TEAM'] === "Oregon")*/; //duel meet calculations
+    })
+    .reduce((teamObj,result,i)=>{
+      if(!teamObj[result['TEAM']]){
+        teamObj[result['TEAM']] = 0;
+      }
+      teamObj[result['TEAM']] += 1;
+      if(teamObj[result['TEAM']] <= 5){
+        result['SCORE'] = i+1;
+      }
+      return teamObj;
+    },{});
+  }
+
+  //scoring filters teams under 5 participants and populate average and spread
+  populateScoringInfoAndBuildScoringFilters(scoringInfo){
+    return Object.keys(scoringInfo).reduce((info,team)=>{
+      info.scoringInfo[team].spread = this.getSpread(info.scoringInfo[team].scoringTimes);
+      info.scoringInfo[team].average = this.getAverage(info.scoringInfo[team].scoringTimes);
+      if(info.scoringInfo[team].count < 5){
+        info.scoringFilters.push(team);
+      }
+      return info;
+    },{scoringFilters:[],scoringInfo:JSON.parse(JSON.stringify(scoringInfo))});
+  }
+
+  //order,totaltime,scoringTimes
+  buildScoringInfo(results){
+    return results.reduce((sInfo,result,i)=>{
+      if(!sInfo[result['TEAM']]){
+        sInfo[result['TEAM']] = {
+          count:0,
+          SCORE:0,
+          order:[],
+          totalTime:new Date('1/1/1'),
+          scoringTimes:[]
+        };
+      }
+      let infoRef = sInfo[result['TEAM']];
+      if(infoRef.count < 5){
+        infoRef.count += 1;
+        //infoRef.score += result['PL']; // may not be needed could be processed on the fly
+        infoRef.order.push(result['PL']);
+        this.addTime(result['TIME'],infoRef.totalTime); // may not be needed could be processed on the fly
+        infoRef.scoringTimes.push(result['TIME']);
+      }
+      return sInfo;
+    },{});
+  }
 
   addTime(time:string,elapsedTime:Date,subtract?:boolean){
     let timeInfo = time.split(':');
@@ -257,18 +284,39 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     });
     average = average/scoringTimes.length;
     a.setTime(average);
+    return a;
   }
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.results, event.previousIndex, event.currentIndex);
+    //recalculate here
   }
 
-  formatTime(time){
+  formatTime(time,mili?){
+    let miliCompare = 0;
+    let divide = 1000;
+    if(mili){
+      miliCompare = 9;
+      divide = 100;
+    }
+    if(typeof time === "string"){
+      time = new Date(time);
+    }
     let hours = time.getHours();
     let minutes = time.getMinutes();
     let seconds = time.getSeconds();
-    let milliseconds = parseInt((time.getMilliseconds()/1000).toFixed(0));
-    if(milliseconds > 0){
+    let milliseconds = parseInt((time.getMilliseconds()/divide).toFixed(0));
+    let miliString = '';
+    if(mili){
+      if(milliseconds < 10){
+        miliString = '.'+milliseconds;
+      }
+      else{
+        miliString = '.0';
+      }
+      //miliString = '.'+time.getMilliseconds();
+    }
+    if(milliseconds > miliCompare){
       seconds += 1;
       if(seconds > 59){
         seconds = '00';
@@ -285,8 +333,12 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     if(seconds < 10 && !(seconds.length === 2)){
       seconds = '0'+seconds;
     }
-    return hours+':'+minutes+':'+seconds;
-    return time;
+    let hoursString = '';
+    if(hours !== 0){
+      hoursString = hours+':';
+    }
+    return hoursString+minutes+':'+seconds+miliString;
+    return time; 
   }
 
 }
