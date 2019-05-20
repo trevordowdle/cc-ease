@@ -148,24 +148,11 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     temp = this.populateScoringInfoAndBuildScoringFilters(scoringInfo);
     let scoringFilters = temp.scoringFilters;
     scoringInfo = temp.scoringInfo;
-    //TODO - peur fnc
     //calculate runners scores
-    this.calculateScores(results,scoringFilters);
+    results = this.calculateScores(results,scoringFilters);
+    //get scoring totals by team
+    let scoreTotals = this.getScoringTotals(results);
 
-    let scoreTotals = results.reduce((scoreObj,result)=>{
-      if(!scoreObj[result['TEAM']]){
-        scoreObj[result['TEAM']] = {
-          score:0,
-          count:0
-        }
-      }
-      let infoRef = scoreObj[result['TEAM']];
-      infoRef.count += 1;
-      if(infoRef.count <= 5){
-        infoRef.score += result['SCORE'];
-      }
-      return scoreObj
-    },{});
     Object.keys(scoreTotals).map(key=>{
       scoringInfo[key].score = scoreTotals[key].score;
     });
@@ -189,7 +176,8 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
 
 
   //Determine runners scores
-  calculateScores(results,scoringFilters){
+  calculateScores(passedInResults,scoringFilters){
+    let results = JSON.parse(JSON.stringify(passedInResults));
     let teamCount = {};
     results.filter((result)=>{
       if(!teamCount[result['TEAM']]){
@@ -207,6 +195,24 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
         result['SCORE'] = i+1;
       }
       return teamObj;
+    },{});
+    return results;
+  }
+
+  getScoringTotals(results){
+    return results.reduce((scoreObj,result)=>{
+      if(!scoreObj[result['TEAM']]){
+        scoreObj[result['TEAM']] = {
+          score:0,
+          count:0
+        }
+      }
+      let infoRef = scoreObj[result['TEAM']];
+      infoRef.count += 1;
+      if(infoRef.count <= 5){
+        infoRef.score += result['SCORE'];
+      }
+      return scoreObj
     },{});
   }
 
