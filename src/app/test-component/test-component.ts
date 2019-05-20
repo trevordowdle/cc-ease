@@ -11,6 +11,8 @@ export class TestComponent {
 raceInfo:object;
 scoringKeys:object;
 results:any;
+originalResults:any;
+startResults:any;
 resultKeys:Array<string> = ["PL","NAME","TEAM","TIME","SCORE"];
 
 raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
@@ -125,8 +127,8 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
 
   constructor(){
     console.log(this.raceData);
-    let results = this.raceData.split('\n');
-    results = results.reduce((output,result)=>{
+    let initialResults = this.raceData.split('\n');
+    initialResults = initialResults.reduce((output,result)=>{
       let info = result.split('	');
       output.push({
         PL:parseInt(info[0]),
@@ -140,33 +142,11 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
       return output;
     },[]);
 
-    let temp;
+    this.originalResults = initialResults;
+    this.startResults = initialResults;
 
-    //get Scoring info
-    let scoringInfo = this.buildScoringInfo(results);
-    //get Scoring filters, populate avg, spread
-    temp = this.populateScoringInfoAndBuildScoringFilters(scoringInfo);
-    let scoringFilters = temp.scoringFilters;
-    scoringInfo = temp.scoringInfo;
-    //calculate runners scores
-    results = this.calculateScores(results,scoringFilters);
-    //get scoring totals by team
-    let scoreTotals = this.getScoringTotals(results);
+    this.buildResults(this.startResults);
 
-    Object.keys(scoreTotals).map(key=>{
-      scoringInfo[key].score = scoreTotals[key].score;
-    });
-    this.raceInfo = scoringInfo;
-    this.scoringKeys = Object.keys(scoringInfo)
-    .filter(key=>{
-      return scoringInfo[key].count >= 5;
-    })
-    .sort(function(a,b){
-      return scoringInfo[a].score < scoringInfo[b].score ? -1 : 1;
-    });
-    this.results = results;
-    //debugger; 
-    //console.log(results);
   }
 
   ngOnInit(){
@@ -174,6 +154,55 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     console.log('k');
   };
 
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.startResults, event.previousIndex, event.currentIndex);
+    this.buildResults(this.startResults);
+    //moveItemInArray(this.results, event.previousIndex, event.currentIndex);
+    //recalculate here
+  }
+
+  buildResults(startResults){
+        //get Scoring info
+    let scoringInfo = this.buildScoringInfo(startResults);
+    //get Scoring filters
+    let scoringFilters = this.buildScoringFilters(scoringInfo);
+
+    //Bottom info detail
+
+    //calculate runners scores
+    let results = this.calculateScores(startResults,scoringFilters);
+
+    // TOP info detail //
+
+    //get scoring totals by team
+    let scoreTotals = this.getScoringTotals(results);
+    //populate score, avg time, spread
+    this.raceInfo = this.populateRaceInfo(scoringInfo,scoreTotals);
+    //get scoring keys in order by place
+    this.scoringKeys = this.getScoringKeys(this.raceInfo); 
+
+    this.results = results;
+  }
+
+  getScoringKeys(raceInfo){
+    return Object.keys(raceInfo)
+    .filter(key=>{
+      return raceInfo[key].count >= 5;
+    })
+    .sort(function(a,b){
+      return raceInfo[a].score < raceInfo[b].score ? -1 : 1;
+    });
+  }
+
+  populateRaceInfo(info,scoreTotals){
+    let scoringInfo = JSON.parse(JSON.stringify(info));
+    Object.keys(scoreTotals).map(key=>{
+      scoringInfo[key].score = scoreTotals[key].score;
+      scoringInfo[key].spread = this.getSpread(scoringInfo[key].scoringTimes);
+      scoringInfo[key].average = this.getAverage(scoringInfo[key].scoringTimes);
+    });  
+    return scoringInfo;
+  }
 
   //Determine runners scores
   calculateScores(passedInResults,scoringFilters){
@@ -217,15 +246,13 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
   }
 
   //scoring filters teams under 5 participants and populate average and spread
-  populateScoringInfoAndBuildScoringFilters(scoringInfo){
-    return Object.keys(scoringInfo).reduce((info,team)=>{
-      info.scoringInfo[team].spread = this.getSpread(info.scoringInfo[team].scoringTimes);
-      info.scoringInfo[team].average = this.getAverage(info.scoringInfo[team].scoringTimes);
-      if(info.scoringInfo[team].count < 5){
-        info.scoringFilters.push(team);
+  buildScoringFilters(scoringInfo){
+    return Object.keys(scoringInfo).reduce((scoringFilters,team)=>{
+      if(scoringInfo[team].count < 5){
+        scoringFilters.push(team);
       }
-      return info;
-    },{scoringFilters:[],scoringInfo:JSON.parse(JSON.stringify(scoringInfo))});
+      return scoringFilters;
+    },[]);
   }
 
   //order,totaltime,scoringTimes
@@ -277,7 +304,6 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
       this.addTime(scoringTimes[0],a,true); 
       return a;
     }
-
   }
 
   getAverage(scoringTimes){
@@ -291,11 +317,6 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     average = average/scoringTimes.length;
     a.setTime(average);
     return a;
-  }
-
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.results, event.previousIndex, event.currentIndex);
-    //recalculate here
   }
 
   formatTime(time,mili?){

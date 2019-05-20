@@ -13,6 +13,7 @@
       <th>TEAM</th>
       <th>Total Time</th>
       <th>Avg. Time</th>
+      <th>Spread</th>
       <th>Score</th>
     </tr>
   </thead>
@@ -29,6 +30,9 @@
       </td>
       <td>
         {{formatTime(raceInfo[key].average,true)}}
+      </td>
+      <td>
+        {{formatTime(raceInfo[key].spread,true)}}
       </td>
       <td>
         {{raceInfo[key].score}}
