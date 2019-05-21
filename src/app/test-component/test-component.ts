@@ -128,10 +128,10 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
   constructor(){
     console.log(this.raceData);
     let initialResults = this.raceData.split('\n');
-    initialResults = initialResults.reduce((output,result)=>{
+    initialResults = initialResults.reduce((output,result,i)=>{
       let info = result.split('	');
       output.push({
-        PL:parseInt(info[0]),
+        //PL:i+1,
         NAME:info[1],
         bib:info[2],
         TEAM:info[3],
@@ -156,9 +156,20 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.startResults, event.previousIndex, event.currentIndex);
-    this.buildResults(this.startResults);
+    if(event.previousIndex !== event.currentIndex){
+      this.adjustTime(event.currentIndex === this.startResults.length-1,event.currentIndex);
+      this.buildResults(this.startResults);
+    }
     //moveItemInArray(this.results, event.previousIndex, event.currentIndex);
     //recalculate here
+  }
+
+  adjustTime(last,currentIndex){
+    let ref = last ? -1 : 1;
+    if(ref === -1){
+      debugger;
+    }
+    this.startResults[currentIndex]['TIME'] = this.startResults[currentIndex+ref]['TIME'];
   }
 
   buildResults(startResults){
@@ -208,7 +219,8 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
   calculateScores(passedInResults,scoringFilters){
     let results = JSON.parse(JSON.stringify(passedInResults));
     let teamCount = {};
-    results.filter((result)=>{
+    results.filter((result,index)=>{
+      result['PL'] = index+1;
       if(!teamCount[result['TEAM']]){
         teamCount[result['TEAM']] = 0;
       }
