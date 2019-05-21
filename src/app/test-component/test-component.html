@@ -3,9 +3,13 @@
 <!--   <h1>{{title}}</h1> -->
 </div>
 <br />
-
-
-
+<div>
+  <br />
+  <button mat-raised-button color="primary" [disabled]="!resultsModified" (click)="undoChanges()">
+    Undo Changes
+  </button>
+  <br />
+</div>
 <br />
 <table>
   <thead>

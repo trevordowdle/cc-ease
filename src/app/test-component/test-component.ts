@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import {MatButtonModule} from '@angular/material';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
@@ -14,6 +15,7 @@ results:any;
 originalResults:any;
 startResults:any;
 resultKeys:Array<string> = ["PL","NAME","TEAM","TIME","SCORE"];
+resultsModified:boolean = false;
 
 raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
 2	LINKLETTER, Rory	119	BYU	--	23:43.4	0:01.4
@@ -142,7 +144,7 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
       return output;
     },[]);
 
-    this.originalResults = initialResults;
+    this.originalResults = JSON.parse(JSON.stringify(initialResults));
     this.startResults = initialResults;
 
     this.buildResults(this.startResults);
@@ -154,11 +156,17 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     console.log('k');
   };
 
+  undoChanges(){
+    this.buildResults(this.originalResults);
+    this.resultsModified = false;
+  }
+
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.startResults, event.previousIndex, event.currentIndex);
     if(event.previousIndex !== event.currentIndex){
       this.adjustTime(event.currentIndex === this.startResults.length-1,event.currentIndex);
       this.buildResults(this.startResults);
+      this.resultsModified = true;
     }
     //moveItemInArray(this.results, event.previousIndex, event.currentIndex);
     //recalculate here
@@ -166,9 +174,6 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
 
   adjustTime(last,currentIndex){
     let ref = last ? -1 : 1;
-    if(ref === -1){
-      debugger;
-    }
     this.startResults[currentIndex]['TIME'] = this.startResults[currentIndex+ref]['TIME'];
   }
 
