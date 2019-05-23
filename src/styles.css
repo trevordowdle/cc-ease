@@ -2,7 +2,8 @@
 
 /* Add application styles & imports to this file! */
 body {
-  font-family:Roboto, Arial, sans-serif;
+  /*font-family:Roboto, Arial, sans-serif;*/
+  font-family: 'Open Sans', sans-serif;
 }
 
 .center {
