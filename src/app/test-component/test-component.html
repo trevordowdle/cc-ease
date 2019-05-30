@@ -1,6 +1,65 @@
 <div class="center">
   <h1>Because I wanted to send something to space</h1>
+
+
+<div cdkDropListGroup>
+  <mat-grid-list cols="4">
+    <mat-grid-tile>
+          <div class="example-container">
+        <h2>Available items</h2>
+
+        <div
+          cdkDropList
+          [cdkDropListData]="items"
+          class="example-list"
+          cdkDropListSortingDisabled
+          (cdkDropListDropped)="dropMod($event)">
+          <div class="example-box" *ngFor="let item of items" cdkDrag>{{item}}</div>
+        </div>
+      </div>   
+    </mat-grid-tile>
+    <mat-grid-tile>
+          <div class="example-container">
+        <h2>Shopping basket</h2>
+
+        <div
+          cdkDropList
+          [cdkDropListData]="basket"
+          class="example-list"
+          (cdkDropListDropped)="dropMod($event)">
+          <div class="example-box" *ngFor="let item of basket" cdkDrag>{{item}}</div>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
 <!--   <h1>{{title}}</h1> -->
+<!--   <div cdkDropListGroup>
+    <div class="example-container">
+      <h2>Available items</h2>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="items"
+        class="example-list"
+        cdkDropListSortingDisabled
+        (cdkDropListDropped)="dropMod($event)">
+        <div class="example-box" *ngFor="let item of items" cdkDrag>{{item}}</div>
+      </div>
+    </div>
+
+    <div class="example-container">
+      <h2>Shopping basket</h2>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="basket"
+        class="example-list"
+        (cdkDropListDropped)="dropMod($event)">
+        <div class="example-box" *ngFor="let item of basket" cdkDrag>{{item}}</div>
+      </div>
+    </div>
+  </div> -->
 </div>
 <br />
 <div>

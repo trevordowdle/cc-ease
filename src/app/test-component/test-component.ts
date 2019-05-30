@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import {MatButtonModule} from '@angular/material';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-test-component',
@@ -8,6 +8,31 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
   styleUrls: ['./test-component.css']
 })
 export class TestComponent {
+
+  items = [
+    'Carrots',
+    'Tomatoes',
+    'Onions',
+    'Apples',
+    'Avocados'
+  ];
+
+  basket = [
+    'Oranges',
+    'Bananas',
+    'Cucumbers'
+  ];
+
+  dropMod(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
+    }
+  }
 
 raceInfo:object;
 scoringKeys:object;
