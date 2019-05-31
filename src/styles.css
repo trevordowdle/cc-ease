@@ -9,3 +9,7 @@ body {
 .center {
   text-align:center;
 }
+
+.mat-grid-tile .mat-figure {
+  align-items:stretch!important;
+}
