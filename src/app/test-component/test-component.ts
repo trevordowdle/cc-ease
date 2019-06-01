@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import {MatButtonModule} from '@angular/material';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+//import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-test-component',
@@ -155,13 +155,13 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
 
  @Input() title: string;
 
-  constructor(breakpointObserver: BreakpointObserver){
+  constructor(/* breakpointObserver: BreakpointObserver */){
 
-    breakpointObserver.observe([
+/*     breakpointObserver.observe([
       Breakpoints.Handset
     ]).subscribe(result => {
       this.isMobile = result.matches;
-    });
+    }); */
 
     console.log(this.raceData);
     let initialResults = this.raceData.split('\n');
