@@ -3,7 +3,7 @@
 
 
 <div cdkDropListGroup>
-  <mat-grid-list cols="4">
+  <mat-grid-list [cols]="isMobile ? 2 : 4">
     <mat-grid-tile>
           <div class="example-container">
         <h2>Available items</h2>
