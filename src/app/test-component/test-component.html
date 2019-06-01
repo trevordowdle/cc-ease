@@ -1,69 +1,10 @@
 <div class="center">
   <h1>Because I wanted to send something to space</h1>
-
-<!-- <div cdkDropListGroup>
-  <mat-grid-list [cols]="isMobile ? 2 : 4">
-    <mat-grid-tile>
-          <div class="example-container">
-        <h2>Available items</h2>
-
-        <div
-          cdkDropList
-          [cdkDropListData]="items"
-          class="example-list"
-          cdkDropListSortingDisabled
-          (cdkDropListDropped)="dropMod($event)">
-          <div class="example-box" *ngFor="let item of items" cdkDrag>{{item}}</div>
-        </div>
-      </div> 
-    </mat-grid-tile>
-    <mat-grid-tile>
-          <div class="example-container">
-        <h2>Shopping basket</h2>
-
-        <div
-          cdkDropList
-          [cdkDropListData]="basket"
-          class="example-list"
-          (cdkDropListDropped)="dropMod($event)">
-          <div class="example-box" *ngFor="let item of basket" cdkDrag>{{item}}</div>
-        </div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
-</div> -->
-
-
-<!--   <h1>{{title}}</h1> -->
-<!--   <div cdkDropListGroup>
-    <div class="example-container">
-      <h2>Available items</h2>
-
-      <div
-        cdkDropList
-        [cdkDropListData]="items"
-        class="example-list"
-        cdkDropListSortingDisabled
-        (cdkDropListDropped)="dropMod($event)">
-        <div class="example-box" *ngFor="let item of items" cdkDrag>{{item}}</div>
-      </div>
-    </div>
-
-    <div class="example-container">
-      <h2>Shopping basket</h2>
-
-      <div
-        cdkDropList
-        [cdkDropListData]="basket"
-        class="example-list"
-        (cdkDropListDropped)="dropMod($event)">
-        <div class="example-box" *ngFor="let item of basket" cdkDrag>{{item}}</div>
-      </div>
-    </div>
-  </div> -->
 </div>
 <br />
 <div>
+  <br />
+  <button (click)="openDialog()">temp</button>
   <br />
   <button mat-raised-button color="primary" [disabled]="!resultsModified" (click)="undoChanges()">
     Undo Changes
@@ -71,7 +12,7 @@
   <br />
 </div>
 <br />
-<table>
+<table id="tblInfo">
   <thead>
     <tr>
       <th>PL</th>
@@ -83,7 +24,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let key of scoringKeys; let i = index">
+    <tr *ngFor="let key of scoringKeys; let i = index" (click)="showGroupingModal()">
       <td>
         {{i+1}}
       </td>
@@ -121,7 +62,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let result of results" cdkDrag>
+      <tr matTooltip="Drag to simulate results" matTooltipShowDelay="1000"
+        matTooltipHideDelay="300" *ngFor="let result of results" cdkDrag>
         <td *ngFor="let key of resultKeys">
           {{result[key]}}
         </td>

@@ -1,7 +1,6 @@
-import { Component, Input } from '@angular/core';
-import {MatButtonModule} from '@angular/material';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-//import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import { Component, Input, Inject } from '@angular/core';
+import {MatButtonModule, MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-test-component',
@@ -9,33 +8,6 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
   styleUrls: ['./test-component.css']
 })
 export class TestComponent {
-
-  public isMobile: boolean = false;
-
-  items = [
-    'Carrots',
-    'Tomatoes',
-    'Onions',
-    'Apples',
-    'Avocados'
-  ];
-
-  basket = [
-    'Oranges',
-    'Bananas',
-    'Cucumbers'
-  ];
-
-  dropMod(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
-    }
-  }
 
 raceInfo:object;
 scoringKeys:object;
@@ -155,13 +127,9 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
 
  @Input() title: string;
 
-  constructor(/* breakpointObserver: BreakpointObserver */){
+  constructor(public dialog: MatDialog){
 
-/*     breakpointObserver.observe([
-      Breakpoints.Handset
-    ]).subscribe(result => {
-      this.isMobile = result.matches;
-    }); */
+
 
     console.log(this.raceData);
     let initialResults = this.raceData.split('\n');
@@ -190,6 +158,10 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     //console.log(BillDellinger);
     console.log('k');
   };
+
+  showGroupingModal(){
+    alert('okay');
+  }
 
   undoChanges(){
     this.buildResults(this.originalResults);
@@ -418,6 +390,33 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     }
     return hoursString+minutes+':'+seconds+miliString;
     return time; 
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogueGrouping, {
+      width: '250px',
+      data: 'test'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      alert(result);
+    });
+  }
+
+}
+
+@Component({
+  selector: 'grouping-dialog',
+  templateUrl: 'groupingDialogue/groupingDialogue.html',
+})
+export class DialogueGrouping {
+  constructor(
+    public dialogRef: MatDialogRef<DialogueGrouping>,
+    @Inject(MAT_DIALOG_DATA) public data: string) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }

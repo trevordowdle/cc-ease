@@ -57,7 +57,7 @@ table tbody tr:hover {
   background-color: rgb(238, 238, 238);
 }
 
-table#tblResult tbody tr {
+table#tblResult tbody tr, table#tblInfo tbody tr {
   cursor:pointer;
 }
 
