@@ -2,6 +2,11 @@ import { Component, Input, Inject } from '@angular/core';
 import {MatButtonModule, MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
+export interface DialogData {
+  animal: string;
+  name: string;
+}
+
 @Component({
   selector: 'app-test-component',
   templateUrl: './test-component.html',
@@ -392,15 +397,19 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     return time; 
   }
 
+  animal: string;
+  name: string;
+
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogueGrouping, {
+    const dialogRef = this.dialog.open(GroupingDialog, {
       width: '250px',
-      data: 'test'
+      data: {name: this.name, animal: this.animal}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      alert(result);
+      this.animal = result;
+      alert(this.animal);
     });
   }
 
@@ -410,13 +419,12 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
   selector: 'grouping-dialog',
   templateUrl: 'groupingDialogue/groupingDialogue.html',
 })
-export class DialogueGrouping {
+export class GroupingDialog {
   constructor(
-    public dialogRef: MatDialogRef<DialogueGrouping>,
-    @Inject(MAT_DIALOG_DATA) public data: string) {}
+    public dialogRef: MatDialogRef<GroupingDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 }
