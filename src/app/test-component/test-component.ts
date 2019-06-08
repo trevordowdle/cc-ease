@@ -2,6 +2,8 @@ import { Component, Input, Inject } from '@angular/core';
 import {MatButtonModule, MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
+import { RaceLogic } from "./script/RaceLogic";
+
 export interface DialogData {
   animal: string;
   name: string;
@@ -133,10 +135,8 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
  @Input() title: string;
 
   constructor(public dialog: MatDialog){
-
-
-
-    console.log(this.raceData);
+    let raceLogic = new RaceLogic();
+    //console.log(this.raceData);
     let initialResults = this.raceData.split('\n');
     initialResults = initialResults.reduce((output,result,i)=>{
       let info = result.split('	');
@@ -164,8 +164,8 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     console.log('k');
   };
 
-  showGroupingModal(){
-    alert('okay');
+  showGroupingModal(team){
+    this.openDialog(team);
   }
 
   undoChanges(){
@@ -397,19 +397,20 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     return time; 
   }
 
-  team: string;
+
   grouping: string;
 
-  openDialog(): void {
-    this.team = 'BYU';
+  openDialog(team): void {
     const dialogRef = this.dialog.open(GroupingDialog, {
       width: '250px',
-      data: {team: this.team, grouping: this.grouping}
+      data: {team: team, grouping: this.grouping}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      alert(result);
+      if(result.grouping){
+        console.log('The dialog was closed');
+        alert(result.grouping + ' ' + result.team);
+      }
     });
   }
 
