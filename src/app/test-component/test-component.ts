@@ -397,19 +397,19 @@ raceData:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
     return time; 
   }
 
-  animal: string;
-  name: string;
+  team: string;
+  grouping: string;
 
   openDialog(): void {
+    this.team = 'BYU';
     const dialogRef = this.dialog.open(GroupingDialog, {
       width: '250px',
-      data: {name: this.name, animal: this.animal}
+      data: {team: this.team, grouping: this.grouping}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.animal = result;
-      alert(this.animal);
+      alert(result);
     });
   }
 
