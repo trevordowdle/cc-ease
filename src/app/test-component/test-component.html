@@ -2,7 +2,11 @@
   <h1>Because I wanted to send something to space</h1>
 </div>
 <br />
-{{JSON.stringify(groupingData)}}
+<div *ngIf="groupingData">
+  <div *ngFor="let groupName of getKeys(groupingData)">
+    {{groupName + ' ' + groupingData[groupName]}}
+  </div>
+</div>
 <br />
 <div>
   <br />

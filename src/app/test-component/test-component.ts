@@ -23,7 +23,7 @@ resultsModified:boolean = false;
 raceLogic:any;
 formatingUtil:any;
 raceData:string;
-groupingData:object = {};
+groupingData:any={};
 
  @Input() title: string;
 
@@ -39,6 +39,10 @@ groupingData:object = {};
     this.startResults = initialResults;
     this.buildResults(this.startResults);
   };
+
+  getKeys(data){
+    return Object.keys(data);
+  }
 
   buildResults(startResults){
     //get Scoring info
