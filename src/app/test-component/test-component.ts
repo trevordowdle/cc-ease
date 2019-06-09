@@ -45,21 +45,10 @@ groupingData:any={};
   }
 
   buildResults(startResults){
-    //get Scoring info
-    let scoringInfo = this.raceLogic.buildScoringInfo(startResults);
-    //get Scoring filters
-    let scoringFilters = this.raceLogic.buildScoringFilters(scoringInfo);
-    //Bottom info detail
-    //calculate runners scores
-    let results = this.raceLogic.calculateScores(startResults,scoringFilters);
-    // TOP info detail //
-    //get scoring totals by team
-    let scoreTotals = this.raceLogic.getScoringTotals(results);
-    //populate score, avg time, spread
-    this.raceInfo = this.raceLogic.populateRaceInfo(scoringInfo,scoreTotals);
-    //get scoring keys in order by place
-    this.scoringKeys = this.raceLogic.getScoringKeys(this.raceInfo); 
-    this.results = results;
+    let info = this.raceLogic.buildResults(startResults);
+    this.raceInfo = info.raceInfo;
+    this.scoringKeys = info.scoringKeys;
+    this.results = info.results;
   }
 
   openDialog(team): void {

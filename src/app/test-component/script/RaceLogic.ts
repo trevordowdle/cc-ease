@@ -1,5 +1,21 @@
  export class RaceLogic {
-
+  buildResults(startResults){
+    //get Scoring info
+    let scoringInfo = this.buildScoringInfo(startResults);
+    //get Scoring filters
+    let scoringFilters = this.buildScoringFilters(scoringInfo);
+    //Bottom info detail
+    //calculate runners scores
+    let results = this.calculateScores(startResults,scoringFilters);
+    // TOP info detail //
+    //get scoring totals by team
+    let scoreTotals = this.getScoringTotals(results);
+    //populate score, avg time, spread
+    let raceInfo = this.populateRaceInfo(scoringInfo,scoreTotals);
+    //get scoring keys in order by place
+    let scoringKeys = this.getScoringKeys(raceInfo); 
+    return {raceInfo:raceInfo,scoringKeys:scoringKeys,results:results};
+  }
   //order,totaltime,scoringTimes
   buildScoringInfo(results){
     return results.reduce((sInfo,result,i)=>{
