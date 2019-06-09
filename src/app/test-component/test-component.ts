@@ -23,6 +23,7 @@ resultsModified:boolean = false;
 raceLogic:any;
 formatingUtil:any;
 raceData:string;
+groupingData:object = {};
 
  @Input() title: string;
 
@@ -66,9 +67,8 @@ raceData:string;
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.grouping){
-        console.log('The dialog was closed');
-        alert(result.grouping + ' ' + result.team);
+      if(result){
+        this.groupingData[result.team] = result.grouping;
       }
     });
   }
