@@ -3,6 +3,7 @@ import {MatButtonModule, MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angula
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {GroupingDialog} from './groupingDialogue/groupingDialogue';
 import { RaceLogic } from "./script/RaceLogic";
+import { DropLogic } from "./script/DropLogic";
 import { RaceData } from "./script/RaceData";
 import { FormatingUtil } from "./script/FormatingUtil";
 
@@ -21,6 +22,7 @@ startResults:any;
 resultKeys:Array<string> = ["PL","NAME","TEAM","TIME","SCORE"];
 resultsModified:boolean = false;
 raceLogic:any;
+dropLogic:any;
 formatingUtil:any;
 raceData:string;
 groupingData:any={};
@@ -32,6 +34,7 @@ groupingData:any={};
   ngOnInit(){
     this.formatingUtil = new FormatingUtil();
     this.raceLogic = new RaceLogic();
+    this.dropLogic = new DropLogic();
     let raceDataInf = new RaceData();
     this.raceData = raceDataInf.dillenger16;
     let initialResults = raceDataInf.buildResultsType1(this.raceData);
@@ -78,15 +81,6 @@ groupingData:any={};
   undoChanges(){
     this.buildResults(this.originalResults);
     this.resultsModified = false;
-  }
-
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.startResults, event.previousIndex, event.currentIndex);
-    if(event.previousIndex !== event.currentIndex){
-      this.adjustTime(event.currentIndex === this.startResults.length-1,event.currentIndex);
-      this.buildResults(this.startResults);
-      this.resultsModified = true;
-    }
   }
 
 }
