@@ -1,5 +1,4 @@
-//TODO
- export class RaceData {
+export class RaceData {
    dillenger16:string = `1	YOUNG, Clayton	126	BYU	--	23:42.4	---
   2	LINKLETTER, Rory	119	BYU	--	23:43.4	0:01.4
   3	MCMILLAN, Connor	121	BYU	--	23:44.0	0:02.0
