@@ -7,9 +7,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
 import { HelloComponent } from './hello.component';
-import { TestComponent, GroupingDialog } from './test-component/test-component';
-
-
+import { TestComponent } from './test-component/test-component';
+import { GroupingDialog } from './test-component/groupingDialogue/groupingDialogue';
 
 @NgModule({
   imports: [ BrowserModule, BrowserAnimationsModule, FormsModule, DragDropModule, MatButtonModule, MatTooltipModule, MatDialogModule, MatFormFieldModule, MatInputModule ],
