@@ -42,10 +42,6 @@ raceData:string;
     this.buildResults(this.startResults);
   };
 
-  getKeys(data){
-    return Object.keys(data);
-  }
-
   buildResults(startResults){
     let info = this.raceLogic.buildResults(startResults);
     this.raceInfo = info.raceInfo;
@@ -64,12 +60,12 @@ raceData:string;
     dialogRef.afterClosed().subscribe(result => {
       if(result){
         if(result.grouped){
-          alert('to do');
+          this.raceLogic.handleUngrouping(result);
         }
         else {
           this.raceLogic.handleGrouping(result);
-          this.buildResults(this.startResults);
         }
+        this.buildResults(this.startResults);
       }
     });
   }

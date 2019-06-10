@@ -2,12 +2,6 @@
   <h1>Because I wanted to send something to space</h1>
 </div>
 <br />
-<div *ngIf="raceLogic.groupingData">
-  <div *ngFor="let groupName of getKeys(raceLogic.groupingData)">
-    {{groupName + ' ' + raceLogic.groupingData[groupName]}}
-  </div>
-</div>
-<br />
 <div>
   <br />
   <button mat-raised-button color="primary" [disabled]="!resultsModified" (click)="undoChanges()">
@@ -70,6 +64,9 @@
         matTooltipHideDelay="300" *ngFor="let result of results" cdkDrag>
         <td *ngFor="let key of resultKeys">
           {{result[key]}}
+          <span *ngIf="key === 'TEAM' && raceLogic.groupingData[result[key]]">
+            ({{raceLogic.groupingData[result[key]]}})
+          </span>
         </td>
       </tr>
     </tbody>

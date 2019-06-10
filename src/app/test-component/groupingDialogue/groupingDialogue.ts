@@ -6,6 +6,7 @@ export interface DialogData {
   team: string;
   grouping: string;
   groupTeams?: Array<string>;
+  selectedTeams?: Array<string>;
   grouped?: boolean;
 }
 
@@ -20,6 +21,7 @@ export class GroupingDialog {
 
   ngOnInit(){
     if(this.data.groupTeams){
+      this.data.selectedTeams = this.data.groupTeams;
       this.data.grouping = this.data.team;
       this.data.grouped = true;
     }

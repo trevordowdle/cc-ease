@@ -1,6 +1,22 @@
  export class RaceLogic {
   groupingData:any = {};
   currentGroups:any = {};
+  handleUngrouping(result){
+    if(result.selectedTeams.length !== result.groupTeams.length){
+      result.selectedTeams.filter(team=>{
+        return result.groupTeams.indexOf(team) === -1;
+      })
+      .map(removedTeam=>{
+        delete this.groupingData[removedTeam];
+      });
+      if(result.groupTeams.length === 0){
+        delete this.currentGroups[result.team];
+      }
+      else {
+        this.currentGroups[result.team] = result.groupTeams;
+      }
+    }
+  }
   handleGrouping(result){
     this.groupingData[result.team] = result.grouping;
     if(!this.currentGroups[result.grouping]){
