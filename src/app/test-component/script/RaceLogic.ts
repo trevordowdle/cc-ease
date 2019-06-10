@@ -1,5 +1,13 @@
  export class RaceLogic {
   groupingData:any = {};
+  currentGroups:any = {};
+  handleGrouping(result){
+    this.groupingData[result.team] = result.grouping;
+    if(!this.currentGroups[result.grouping]){
+      this.currentGroups[result.grouping] = [];
+    }
+    this.currentGroups[result.grouping].push(result.team);
+  }
   buildResults(startResults){
     //get Scoring info
     let scoringInfo = this.buildScoringInfo(startResults);

@@ -1,9 +1,15 @@
 <h1 mat-dialog-title>{{data.team}}</h1>
-<div mat-dialog-content>
+<div *ngIf="!data.grouped" mat-dialog-content>
   <p>Team Grouping</p>
   <mat-form-field>
     <input matInput [(ngModel)]="data.grouping">
   </mat-form-field>
+</div>
+<div *ngIf="data.grouped" mat-dialog-content>
+  <p>It's in a group</p>
+<!--   <mat-form-field>
+    <input matInput [(ngModel)]="data.grouping">
+  </mat-form-field> -->
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>

@@ -54,17 +54,30 @@ raceData:string;
   }
 
   openDialog(team): void {
+    let groupTeams = this.raceLogic.currentGroups[team],
+      data;
+    if(groupTeams){
+      data = {
+        grouping:team,
+        teams:groupTeams,
+        grouped:true
+      };
+    }
+    else {
+      data = {
+        team:team, 
+        grouping:''
+      };
+    }
     //check for grouping here
-    let grouping = '';
     const dialogRef = this.dialog.open(GroupingDialog, {
       width: '250px',
-      data: {team: team, grouping: grouping}
+      data: data
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        debugger;
-        this.raceLogic.groupingData[result.team] = result.grouping;
+        this.raceLogic.handleGrouping(result);
         this.buildResults(this.startResults);
       }
     });
