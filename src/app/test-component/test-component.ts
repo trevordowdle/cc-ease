@@ -54,25 +54,11 @@ raceData:string;
   }
 
   openDialog(team): void {
-    let groupTeams = this.raceLogic.currentGroups[team],
-      data;
-    if(groupTeams){
-      data = {
-        grouping:team,
-        teams:groupTeams,
-        grouped:true
-      };
-    }
-    else {
-      data = {
-        team:team, 
-        grouping:''
-      };
-    }
+    let groupTeams = this.raceLogic.currentGroups[team];
     //check for grouping here
     const dialogRef = this.dialog.open(GroupingDialog, {
       width: '250px',
-      data: data
+      data: {groupTeams:groupTeams,team:team}
     });
 
     dialogRef.afterClosed().subscribe(result => {

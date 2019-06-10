@@ -5,6 +5,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 export interface DialogData {
   team: string;
   grouping: string;
+  groupTeams?: Array<string>;
+  grouped?: boolean;
 }
 
 @Component({
@@ -15,6 +17,16 @@ export class GroupingDialog {
   constructor(
     public dialogRef: MatDialogRef<GroupingDialog>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  ngOnInit(){
+    if(this.data.groupTeams){
+      this.data.grouping = this.data.team;
+      this.data.grouped = true;
+    }
+    else {
+      this.data.grouping = '';
+    }
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
