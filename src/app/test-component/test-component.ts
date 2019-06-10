@@ -77,8 +77,13 @@ raceData:string;
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.raceLogic.handleGrouping(result);
-        this.buildResults(this.startResults);
+        if(result.grouped){
+          alert('to do');
+        }
+        else {
+          this.raceLogic.handleGrouping(result);
+          this.buildResults(this.startResults);
+        }
       }
     });
   }
