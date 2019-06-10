@@ -96,3 +96,8 @@ tr:nth-child(even){background-color: rgba(238,238,238,.3)}
   padding:0px;
 }
 
+.btn-container button {
+  margin-right:8px;
+}
+
+

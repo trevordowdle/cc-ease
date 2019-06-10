@@ -2,10 +2,13 @@
   <h1>Because I wanted to send something to space</h1>
 </div>
 <br />
-<div>
+<div class="btn-container">
   <br />
   <button mat-raised-button color="primary" [disabled]="!resultsModified" (click)="undoChanges()">
     Undo Swaps
+  </button>
+  <button mat-raised-button color="info" disabled="true" (click)="null">
+    Undo Groupings
   </button>
   <br />
 </div>
