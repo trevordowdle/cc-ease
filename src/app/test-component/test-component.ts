@@ -47,6 +47,7 @@ groupingData:any={};
     return Object.keys(data);
   }
 
+  //Move part of this, pass in this
   buildResults(startResults){
     let info = this.raceLogic.buildResults(startResults);
     this.raceInfo = info.raceInfo;
@@ -73,6 +74,7 @@ groupingData:any={};
     this.openDialog(team);
   }
 
+  //move part of this
   undoChanges(){
     this.buildResults(this.originalResults);
     this.resultsModified = false;
