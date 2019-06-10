@@ -1,4 +1,5 @@
  export class RaceLogic {
+  groupingData:any = {};
   buildResults(startResults){
     //get Scoring info
     let scoringInfo = this.buildScoringInfo(startResults);
@@ -19,8 +20,13 @@
   //order,totaltime,scoringTimes
   buildScoringInfo(results){
     return results.reduce((sInfo,result,i)=>{
-      if(!sInfo[result['TEAM']]){
-        sInfo[result['TEAM']] = {
+      let team = result['TEAM'];
+      if(this.groupingData[team]){
+        team = this.groupingData[team];
+      }
+
+      if(!sInfo[team]){
+        sInfo[team] = {
           count:0,
           SCORE:0,
           order:[],
@@ -28,7 +34,7 @@
           scoringTimes:[]
         };
       }
-      let infoRef = sInfo[result['TEAM']];
+      let infoRef = sInfo[team];
       if(infoRef.count < 5){
         infoRef.count += 1;
         //infoRef.score += result['PL']; // may not be needed could be processed on the fly
@@ -71,19 +77,27 @@
     let results = JSON.parse(JSON.stringify(passedInResults));
     let teamCount = {};
     results.filter((result,index)=>{
-      result['PL'] = index+1;
-      if(!teamCount[result['TEAM']]){
-        teamCount[result['TEAM']] = 0;
+      let team = result['TEAM'];
+      if(this.groupingData[team]){
+        team = this.groupingData[team];
       }
-      teamCount[result['TEAM']] += 1;
-      return scoringFilters.indexOf(result['TEAM']) === -1 && teamCount[result['TEAM']] <= 7 /*&& (result['TEAM'] === 'BYU' ||result['TEAM'] === "Oregon")*/; //duel meet calculations
+      result['PL'] = index+1;
+      if(!teamCount[team]){
+        teamCount[team] = 0;
+      }
+      teamCount[team] += 1;
+      return scoringFilters.indexOf(team) === -1 && teamCount[team] <= 7 /*&& (team === 'BYU' ||team === "Oregon")*/; //duel meet calculations
     })
     .reduce((teamObj,result,i)=>{
-      if(!teamObj[result['TEAM']]){
-        teamObj[result['TEAM']] = 0;
+      let team = result['TEAM'];
+      if(this.groupingData[team]){
+        team = this.groupingData[team];
       }
-      teamObj[result['TEAM']] += 1;
-      if(teamObj[result['TEAM']] <= 5){
+      if(!teamObj[team]){
+        teamObj[team] = 0;
+      }
+      teamObj[team] += 1;
+      if(teamObj[team] <= 5){
         result['SCORE'] = i+1;
       }
       return teamObj;
@@ -92,13 +106,17 @@
   }
   getScoringTotals(results){
     return results.reduce((scoreObj,result)=>{
-      if(!scoreObj[result['TEAM']]){
-        scoreObj[result['TEAM']] = {
+      let team = result['TEAM'];
+      if(this.groupingData[team]){
+        team = this.groupingData[team];
+      }
+      if(!scoreObj[team]){
+        scoreObj[team] = {
           score:0,
           count:0
         }
       }
-      let infoRef = scoreObj[result['TEAM']];
+      let infoRef = scoreObj[team];
       infoRef.count += 1;
       if(infoRef.count <= 5){
         infoRef.score += result['SCORE'];

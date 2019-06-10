@@ -2,9 +2,9 @@
   <h1>Because I wanted to send something to space</h1>
 </div>
 <br />
-<div *ngIf="groupingData">
-  <div *ngFor="let groupName of getKeys(groupingData)">
-    {{groupName + ' ' + groupingData[groupName]}}
+<div *ngIf="raceLogic.groupingData">
+  <div *ngFor="let groupName of getKeys(raceLogic.groupingData)">
+    {{groupName + ' ' + raceLogic.groupingData[groupName]}}
   </div>
 </div>
 <br />

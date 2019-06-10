@@ -25,7 +25,6 @@ raceLogic:any;
 dropLogic:any;
 formatingUtil:any;
 raceData:string;
-groupingData:any={};
 
  @Input() title: string;
 
@@ -47,7 +46,6 @@ groupingData:any={};
     return Object.keys(data);
   }
 
-  //Move part of this, pass in this
   buildResults(startResults){
     let info = this.raceLogic.buildResults(startResults);
     this.raceInfo = info.raceInfo;
@@ -65,7 +63,8 @@ groupingData:any={};
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.groupingData[result.team] = result.grouping;
+        this.raceLogic.groupingData[result.team] = result.grouping;
+        this.buildResults(this.startResults);
       }
     });
   }
