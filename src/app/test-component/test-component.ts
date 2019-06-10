@@ -69,11 +69,6 @@ groupingData:any={};
     });
   }
 
-  adjustTime(last,currentIndex){
-    let ref = last ? -1 : 1;
-    this.startResults[currentIndex]['TIME'] = this.startResults[currentIndex+ref]['TIME'];
-  }
-
   showGroupingModal(team){
     this.openDialog(team);
   }
