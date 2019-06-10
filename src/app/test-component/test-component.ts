@@ -63,6 +63,7 @@ raceData:string;
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
+        debugger;
         this.raceLogic.groupingData[result.team] = result.grouping;
         this.buildResults(this.startResults);
       }
