@@ -12,7 +12,7 @@ export interface DialogData {
 
 @Component({
   selector: 'grouping-dialog',
-  templateUrl: 'groupingDialogue.html',
+  templateUrl: 'groupingDialog.html',
 })
 export class GroupingDialog {
   constructor(

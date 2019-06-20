@@ -1,7 +1,8 @@
 import { Component, Input, Inject } from '@angular/core';
-import {MatButtonModule, MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {GroupingDialog} from './groupingDialogue/groupingDialogue';
+import { MatButtonModule, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { GroupingDialog } from './groupingDialog/groupingDialog';
+import { AddDialog } from './addRunnerDialog/addDialog';
 import { RaceLogic } from "./script/RaceLogic";
 import { DropLogic } from "./script/DropLogic";
 import { RaceData } from "./script/RaceData";
