@@ -79,6 +79,13 @@ raceData:string;
     this.resultsModified = false;
   }
 
+  undoGroupings(){
+    this.raceLogic.groupingData = {};
+    this.raceLogic.currentGroups = {};
+    this.buildResults(this.startResults);
+    this.raceLogic.hasGroupings = false;
+  }
+
 }
 
 

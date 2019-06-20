@@ -1,6 +1,10 @@
  export class RaceLogic {
   groupingData:any = {};
   currentGroups:any = {};
+  hasGroupings:boolean = false;
+  checkHasGroupings(){
+    this.hasGroupings = Object.keys(this.currentGroups).length > 0;
+  }
   handleUngrouping(result){
     if(result.selectedTeams.length !== result.groupTeams.length){
       result.selectedTeams.filter(team=>{
@@ -16,6 +20,7 @@
         this.currentGroups[result.team] = result.groupTeams;
       }
     }
+    this.checkHasGroupings();
   }
   handleGrouping(result){
     this.groupingData[result.team] = result.grouping;
@@ -23,6 +28,7 @@
       this.currentGroups[result.grouping] = [];
     }
     this.currentGroups[result.grouping].push(result.team);
+    this.checkHasGroupings();
   }
   buildResults(startResults){
     //get Scoring info
