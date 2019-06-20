@@ -53,7 +53,7 @@
 <br />
 <br />
 <div class="center">
-  <mat-icon aria-hidden="false" class="add icon">add_circle</mat-icon>
+  <mat-icon aria-hidden="false" class="add icon" (click)="showAddModal()">add_circle</mat-icon>
 </div>
 <br />
 <div cdkDropList (cdkDropListDropped)="dropLogic.drop(this,$event)" class="mat-elevation-z8 container">

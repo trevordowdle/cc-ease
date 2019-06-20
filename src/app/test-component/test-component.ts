@@ -50,7 +50,7 @@ raceData:string;
     this.results = info.results;
   }
 
-  openDialog(team): void {
+  openGroupDialog(team): void {
     let groupTeams = this.raceLogic.currentGroups[team];
     //check for grouping here
     const dialogRef = this.dialog.open(GroupingDialog, {
@@ -71,8 +71,24 @@ raceData:string;
     });
   }
 
+  openAddDialog(team): void {
+    //check for grouping here
+    const dialogRef = this.dialog.open(AddDialog, {
+      width: '300px',
+      data: {yo:'test'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      debugger;
+    });
+  }
+
   showGroupingModal(team){
-    this.openDialog(team);
+    this.openGroupDialog(team);
+  }
+
+  showAddModal(team){
+    this.openAddDialog(team);
   }
 
   undoChanges(){
