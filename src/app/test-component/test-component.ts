@@ -75,7 +75,8 @@ raceData:string;
   }
 
   undoChanges(){
-    this.buildResults(this.originalResults);
+    this.startResults = JSON.parse(JSON.stringify(this.originalResults));
+    this.buildResults(this.startResults);
     this.resultsModified = false;
   }
 
