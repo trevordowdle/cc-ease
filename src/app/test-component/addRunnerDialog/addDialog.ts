@@ -23,4 +23,13 @@ export class AddDialog {
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+  updateTime(val){
+    let ref = this.data['results'][this.data['place']-1];
+    if(!ref){
+      ref = this.data['results'][this.data['results'].length-1];
+    }
+    this.data['time'] = ref.TIME;
+  }
+
 }

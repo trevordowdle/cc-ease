@@ -75,10 +75,13 @@ raceData:string;
     //check for grouping here
     const dialogRef = this.dialog.open(AddDialog, {
       width: '300px',
-      data: {yo:'test'}
+      data: {
+        results:this.startResults
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
       debugger;
     });
   }
