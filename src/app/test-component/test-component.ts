@@ -81,8 +81,16 @@ raceData:string;
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      debugger;
+      let ref = result['results'][result['place']-1];
+      if(!ref){
+        ref = result['results'][result['results'].length-1];
+      }
+      let addedEntry = JSON.parse(JSON.stringify(ref));
+      addedEntry.NAME = result.name;
+      addedEntry.TEAM = result.team;
+      this.startResults.splice(result.place-1, 0,addedEntry);
+      this.buildResults(this.startResults);
+      this.resultsModified = true;
     });
   }
 
