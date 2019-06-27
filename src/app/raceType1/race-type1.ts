@@ -13,7 +13,7 @@ import { FormatingUtil } from "./script/FormatingUtil";
   templateUrl: './race-type1.html',
   styleUrls: ['./race-type1.css']
 })
-export class TestComponent {
+export class RaceType1 {
 
 raceInfo:object;
 scoringKeys:object;
