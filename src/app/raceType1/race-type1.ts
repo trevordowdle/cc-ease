@@ -9,9 +9,9 @@ import { RaceData } from "./script/RaceData";
 import { FormatingUtil } from "./script/FormatingUtil";
 
 @Component({
-  selector: 'app-test-component',
-  templateUrl: './test-component.html',
-  styleUrls: ['./test-component.css']
+  selector: 'race-type1',
+  templateUrl: './race-type1.html',
+  styleUrls: ['./race-type1.css']
 })
 export class TestComponent {
 
