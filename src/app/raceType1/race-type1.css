@@ -1,7 +1,7 @@
-.icon.add {
-  color:green;
-  font-size:32px;
+.button-add {
+  color:white;
   cursor:pointer;
+  background-color:green;
 }
 
 .example-box {
@@ -65,6 +65,11 @@ table tbody tr:hover {
 
 table#tblResult tbody tr, table#tblInfo tbody tr {
   cursor:pointer;
+}
+
+table#tblResult, table#tblInfo {
+  width:92%;
+  margin:0 auto;
 }
 
 .cdk-drag-preview {

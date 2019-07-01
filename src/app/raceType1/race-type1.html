@@ -12,52 +12,56 @@
   </button>
 </div>
 <br />
-<table id="tblInfo">
-  <thead>
-    <tr>
-      <th>PL</th>
-      <th>TEAM</th>
-      <th>Total Time</th>
-      <th>Avg. Time</th>
-      <th>Spread</th>
-      <th>Score</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let key of scoringKeys; let i = index" (click)="showGroupingModal(key)">
-      <td>
-        {{i+1}}
-      </td>
-      <td>
-        {{key}}
-      </td>
-      <td>
-        {{formatingUtil.formatTime(raceInfo[key].totalTime)}}
-      </td>
-      <td>
-        {{formatingUtil.formatTime(raceInfo[key].average,true)}}
-      </td>
-      <td>
-        {{formatingUtil.formatTime(raceInfo[key].spread,true)}}
-      </td>
-      <td>
-        {{raceInfo[key].score}}
-      </td>
-    </tr>
+<div class="container"> 
+  <table id="tblInfo" class="mat-elevation-z8">
+    <thead>
+      <tr>
+        <th>PL</th>
+        <th>TEAM</th>
+        <th>Total Time</th>
+        <th>Avg. Time</th>
+        <th>Spread</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let key of scoringKeys; let i = index" (click)="showGroupingModal(key)">
+        <td>
+          {{i+1}}
+        </td>
+        <td>
+          {{key}}
+        </td>
+        <td>
+          {{formatingUtil.formatTime(raceInfo[key].totalTime)}}
+        </td>
+        <td>
+          {{formatingUtil.formatTime(raceInfo[key].average,true)}}
+        </td>
+        <td>
+          {{formatingUtil.formatTime(raceInfo[key].spread,true)}}
+        </td>
+        <td>
+          {{raceInfo[key].score}}
+        </td>
+      </tr>
 
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
 <!-- <div *ngFor="let key of scoringKeys">
   {{key}}:<b>{{raceInfo[key].score}}</b>
 </div> -->
 <br />
 <br />
 <div class="center">
-  <mat-icon aria-hidden="false" class="add icon" (click)="showAddModal()">add_circle</mat-icon>
+  <button class="button-add" mat-fab (click)="showAddModal()">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>
 <br />
-<div cdkDropList (cdkDropListDropped)="dropLogic.drop(this,$event)" class="mat-elevation-z8 container">
-  <table id="tblResult">
+<div cdkDropList (cdkDropListDropped)="dropLogic.drop(this,$event)" class="container">
+  <table id="tblResult" class="mat-elevation-z8">
     <thead>
       <tr>
         <th *ngFor="let key of resultKeys">

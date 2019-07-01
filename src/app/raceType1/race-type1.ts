@@ -55,6 +55,7 @@ raceData:string;
     //check for grouping here
     const dialogRef = this.dialog.open(GroupingDialog, {
       width: '300px',
+      height: '270px',
       data: {groupTeams:groupTeams,team:team}
     });
 
@@ -75,22 +76,25 @@ raceData:string;
     //check for grouping here
     const dialogRef = this.dialog.open(AddDialog, {
       width: '300px',
+      height: '400px',
       data: {
         results:this.startResults
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      let ref = result['results'][result['place']-1];
-      if(!ref){
-        ref = result['results'][result['results'].length-1];
+      if(result){
+        let ref = result['results'][result['place']-1];
+        if(!ref){
+          ref = result['results'][result['results'].length-1];
+        }
+        let addedEntry = JSON.parse(JSON.stringify(ref));
+        addedEntry.NAME = result.name;
+        addedEntry.TEAM = result.team;
+        this.startResults.splice(result.place-1, 0,addedEntry);
+        this.buildResults(this.startResults);
+        this.resultsModified = true;
       }
-      let addedEntry = JSON.parse(JSON.stringify(ref));
-      addedEntry.NAME = result.name;
-      addedEntry.TEAM = result.team;
-      this.startResults.splice(result.place-1, 0,addedEntry);
-      this.buildResults(this.startResults);
-      this.resultsModified = true;
     });
   }
 
@@ -99,7 +103,9 @@ raceData:string;
   }
 
   showAddModal(team){
-    this.openAddDialog(team);
+    setTimeout(()=>{
+      this.openAddDialog(team);
+    },100);
   }
 
   undoChanges(){
